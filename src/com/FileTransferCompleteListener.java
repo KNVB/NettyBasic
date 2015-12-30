@@ -1,5 +1,7 @@
 package com;
 
+import java.util.Calendar;
+
 import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelFutureListener;
 
@@ -15,7 +17,8 @@ public class FileTransferCompleteListener implements ChannelFutureListener
 	@Override
 	public void operationComplete(ChannelFuture cf) throws Exception 
 	{
-		System.out.println("File transfer completed!");
+		Calendar endTime=Calendar.getInstance();
+		System.out.println("File transfer completed! "+endTime.getTimeInMillis());
 		if(server!=null)
 			server.stop();
 		else

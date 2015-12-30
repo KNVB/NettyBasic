@@ -10,26 +10,36 @@ import io.netty.channel.ChannelFuture;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.nio.NioEventLoopGroup;
+import io.netty.channel.oio.OioEventLoopGroup;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.channel.socket.oio.OioSocketChannel;
+
 
 /**
  * 
  * @author SITO3
  */
-public class Client 
+public class OClient 
 {
 	Server server;
 	Logger logger;
 	ChannelHandlerContext responseCtx;
-	public Client(String host, int port, int mode, String fileName)
+	/** 
+	* This is an active mode client for file transfer and file listing transfer	
+	 * @param fileName 
+	 * @param mode 
+	 * @param port 
+	 * @param host 
+	**/
+	public OClient(String host, int port, int mode, String fileName)
 	{
 		server=null;
-		EventLoopGroup group = new NioEventLoopGroup();
+		EventLoopGroup group = new OioEventLoopGroup();
 		try 
 		{
 			Bootstrap b = new Bootstrap(); 
 			b.group(group);
-			b.channel(NioSocketChannel.class);
+			b.channel(OioSocketChannel.class);
 			b.remoteAddress(new InetSocketAddress(host, port));
 			b.handler(new MyChannelInitializer(server, mode,fileName));
 			ChannelFuture f = b.connect().sync();

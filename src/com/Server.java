@@ -3,6 +3,7 @@ package com;
 
 import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.util.Calendar;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
@@ -92,7 +93,8 @@ public class Server
 	{
     	bossGroup.shutdownGracefully();
 		workerGroup.shutdownGracefully();
-		System.out.println("Server is shutdown gracefully.");
+		Calendar endTime=Calendar.getInstance();
+		System.out.println("Server is shutdown gracefully."+endTime.getTimeInMillis());
 	}
 	public static void main(String[] args) throws Exception 
 	{
