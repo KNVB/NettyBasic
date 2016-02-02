@@ -56,6 +56,9 @@ public class Server
             bootStrap.group(bossGroup, workerGroup);
             bootStrap.channel(NioServerSocketChannel.class);
             bootStrap.childHandler(new MyChannelInitializer(this, mode,fileName));
+            bootStrap.childOption(ChannelOption.WRITE_BUFFER_LOW_WATER_MARK, 1024);
+            bootStrap.childOption(ChannelOption.WRITE_BUFFER_HIGH_WATER_MARK, 1024);
+            
             bootStrap.childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
             bootStrap.bind(inSocketAddress);
             System.out.println("Server started");
