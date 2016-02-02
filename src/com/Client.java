@@ -55,7 +55,7 @@ public class Client
 	public static void main(String[] args) throws Exception 
 	{
 		@SuppressWarnings("unused")
-		//Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"D:\\SITO3\\Desktop\\Xmas-20141224-310.jpg");
-		Client c=new Client("localhost",1234,MyFtpServer.SENDFILE,"D:\\SITO3\\Documents\\Xmas-20141224-310.jpg");
+		Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"D:\\SITO3\\Desktop\\Xmas-20141224-310.jpg");
+		//Client c=new Client("localhost",1234,MyFtpServer.SENDFILE,"D:\\SITO3\\Documents\\Xmas-20141224-310.jpg");
 	}
 }
