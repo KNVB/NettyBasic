@@ -55,10 +55,9 @@ public class Server
             ServerBootstrap bootStrap = new ServerBootstrap();
             bootStrap.group(bossGroup, workerGroup);
             bootStrap.channel(NioServerSocketChannel.class);
+            bootStrap.childOption(ChannelOption.WRITE_BUFFER_LOW_WATER_MARK,  1);
+            bootStrap.childOption(ChannelOption.WRITE_BUFFER_HIGH_WATER_MARK, 1);
             bootStrap.childHandler(new MyChannelInitializer(this, mode,fileName));
-            bootStrap.childOption(ChannelOption.WRITE_BUFFER_LOW_WATER_MARK, 1024);
-            bootStrap.childOption(ChannelOption.WRITE_BUFFER_HIGH_WATER_MARK, 1024);
-            
             bootStrap.childOption(ChannelOption.ALLOCATOR, PooledByteBufAllocator.DEFAULT);
             bootStrap.bind(inSocketAddress);
             System.out.println("Server started");
@@ -103,7 +102,8 @@ public class Server
 	{
 		
 		@SuppressWarnings("unused")
-		Server s=new Server("localhost",1234,MyFtpServer.SENDFILE,"D:\\SITO3\\Documents\\Xmas-20141224-310.jpg");
+		//Server s=new Server("localhost",1234,MyFtpServer.SENDFILE,"D:\\SITO3\\Documents\\Xmas-20141224-310.jpg");
+		Server s=new Server("localhost",1234,MyFtpServer.SENDFILE,"D:\\SITO3\\ntuser.ini");
 		//Server s=new Server("localhost",1234,MyFtpServer.RECEIVEFILE,"D:\\SITO3\\Desktop\\Xmas-20141224-310.jpg");
 	}	
 }

@@ -1,5 +1,9 @@
 package com;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.io.IOException;
 import java.io.RandomAccessFile;
@@ -8,13 +12,16 @@ import java.nio.channels.FileChannel;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.ChannelInboundHandler;
+import io.netty.handler.stream.ChunkedFile;
 import io.netty.util.CharsetUtil;
 
-public class MyHandler extends ChannelInboundHandlerAdapter 
+public class MyHandler implements ChannelInboundHandler
 {
+	int i=0;
 	RandomAccessFile file;
 	FileChannel fc;
+	BufferedReader br;
 	ByteBuffer buffer=ByteBuffer.allocate(1024);
 	String fileName;
 	Server server=null;
@@ -30,19 +37,69 @@ public class MyHandler extends ChannelInboundHandlerAdapter
 		this.fileName=fileName;
 		this.server=server;
 	}
-	@Override
 	public void channelActive(ChannelHandlerContext ctx) throws IOException 
 	{
-		file=new RandomAccessFile(fileName,"r");
-		fc=file.getChannel();
-		fc.read(buffer);
-		ctx.writeAndFlush(Unpooled.copiedBuffer(buffer));
+//		ctx.writeAndFlush(new ChunkedFile(new File(this.fileName))).addListener(new FileTransferCompleteListener(server));
+		br=new BufferedReader(new InputStreamReader(new FileInputStream(fileName),"ISO-8859-1"));
+		String line = br.readLine();
+		ctx.writeAndFlush(Unpooled.copiedBuffer(line+"\r\n",CharsetUtil.ISO_8859_1));
+		
 	}
-	 @Override
 	 public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception 
 	 {
-		 System.out.println("I am here");
+		 br.close();
+		 System.out.println((++i)+" I am here  "+ctx.channel().isWritable());
 		 fc.close();
 		 file.close();
 	 }
+	@Override
+	public void handlerAdded(ChannelHandlerContext arg0) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void handlerRemoved(ChannelHandlerContext arg0) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void channelInactive(ChannelHandlerContext arg0) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void channelRead(ChannelHandlerContext arg0, Object arg1)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void channelReadComplete(ChannelHandlerContext arg0)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void channelRegistered(ChannelHandlerContext arg0) throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void channelUnregistered(ChannelHandlerContext arg0)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void exceptionCaught(ChannelHandlerContext arg0, Throwable arg1)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	@Override
+	public void userEventTriggered(ChannelHandlerContext arg0, Object arg1)
+			throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
 }

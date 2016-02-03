@@ -2,6 +2,7 @@ package com;
 
 import java.net.InetSocketAddress;
 import java.util.Calendar;
+import java.util.concurrent.TimeUnit;
 
 import org.apache.logging.log4j.Logger;
 
@@ -43,7 +44,7 @@ public class Client
 		finally 
 		{
 			try {
-				group.shutdownGracefully().sync();
+				group.shutdownGracefully(0,0,TimeUnit.MILLISECONDS).sync();
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
@@ -55,7 +56,8 @@ public class Client
 	public static void main(String[] args) throws Exception 
 	{
 		@SuppressWarnings("unused")
-		Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"D:\\SITO3\\Desktop\\Xmas-20141224-310.jpg");
+		//Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"D:\\SITO3\\Desktop\\Xmas-20141224-310.jpg");
+		Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"D:\\SITO3\\Desktop\\ntuser.ini");
 		//Client c=new Client("localhost",1234,MyFtpServer.SENDFILE,"D:\\SITO3\\Documents\\Xmas-20141224-310.jpg");
 	}
 }
