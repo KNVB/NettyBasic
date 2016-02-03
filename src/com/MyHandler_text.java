@@ -1,8 +1,12 @@
 package com;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStreamReader;
 import java.io.RandomAccessFile;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
@@ -12,9 +16,9 @@ import io.netty.channel.ChannelInboundHandler;
 import io.netty.handler.stream.ChunkedFile;
 import io.netty.util.CharsetUtil;
 
-public class MyHandler implements ChannelInboundHandler
+public class MyHandler_text implements ChannelInboundHandler
 {
-	int i=0,byteRead;
+	int i=0;
 	boolean isCompleted=false;
 	RandomAccessFile file;
 	FileChannel fc;
@@ -29,54 +33,45 @@ public class MyHandler implements ChannelInboundHandler
 	 * @param responseCtx A ChannelHandlerContext for sending file name list transfer result to client
 	 * @param passiveServer PassiveServer object
 	 */
-	public MyHandler(String fileName,Server server)
+	public MyHandler_text(String fileName,Server server)
 	{
 		this.fileName=fileName;
 		this.server=server;
 	}
 	public void channelActive(ChannelHandlerContext ctx) throws IOException 
 	{
-		file=new RandomAccessFile(fileName,"r");
-		fc=file.getChannel();
-		byteRead=fc.read(buffer);
-		System.out.println("a byteRead="+byteRead);
-		ctx.writeAndFlush(Unpooled.wrappedBuffer(buffer.array(),0,byteRead));
+//		ctx.writeAndFlush(new ChunkedFile(new File(this.fileName))).addListener(new FileTransferCompleteListener(server));
+		br=new BufferedReader(new InputStreamReader(new FileInputStream(fileName),"ISO-8859-1"));
+		line = br.readLine();
+		ctx.writeAndFlush(Unpooled.copiedBuffer(line+"\r\n",CharsetUtil.ISO_8859_1));
+		
 	}
-	public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception 
-	{
-		System.out.println("Hello");
-		if (isCompleted)
-		{
-			fc.close();
-			file.close();
-			System.out.println("Server:Transfer completed.");
-			server.stop();	
-		}
-		else
-		{
-			if (fc.position()==file.length())
-			{
-				 isCompleted=true;
-			}
-			else
-			{
+	 public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception 
+	 {
+		 if (isCompleted)
+		 {
+			 br.close();
+			 System.out.println((++i)+" I am here  "+ctx.channel().isWritable());
+			 server.stop();
+		 }
+		 else
+		 {
+			 if (br.ready())
+			 {
 				 if (ctx.channel().isWritable())
 				 {
-					 buffer.clear();
-					 byteRead=fc.read(buffer);
-					 System.out.println("b byteRead="+byteRead);
-					 if (byteRead>0)
-					 {
-						 ctx.writeAndFlush(Unpooled.wrappedBuffer(buffer.array(),0,byteRead));
-					 }
-					 else
+					 line = br.readLine();
+					 if (line==null)
 						 isCompleted=true;
+					 else	 
+						 ctx.writeAndFlush(Unpooled.copiedBuffer(line+"\r\n",CharsetUtil.ISO_8859_1));
 				 }
-				 else
-					 System.out.println("Is writable=false");
-			}
-		}
-	}
+			 }
+			 else
+				 isCompleted=true; 
+		 }
+	 } 
+		 
 	@Override
 	public void handlerAdded(ChannelHandlerContext arg0) throws Exception {
 		// TODO Auto-generated method stub

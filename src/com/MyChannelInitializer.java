@@ -28,7 +28,8 @@ public class MyChannelInitializer extends ChannelInitializer<Channel>
             //ch.pipeline().addLast(new ChannelTrafficShapingHandler(10240L,0L));
             ch.pipeline().addLast("streamer", new ChunkedWriteHandler()); 
             //ch.pipeline().addLast("handler",new SendFileHandler(this.fileName,server));
-            ch.pipeline().addLast("handler",new MyHandler(this.fileName,server));
+            //ch.pipeline().addLast("handler",new MyHandler(this.fileName,server));
+            ch.pipeline().addLast("handler",new MyHandler_text(this.fileName,server));
         }
     }   
 }
