@@ -1,27 +1,20 @@
 package com;
 
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
-import java.io.RandomAccessFile;
 import java.io.IOException;
-import java.io.RandomAccessFile;
 import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
 
 import io.netty.buffer.Unpooled;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandler;
-import io.netty.handler.stream.ChunkedFile;
 import io.netty.util.CharsetUtil;
 
 public class MyHandler_text implements ChannelInboundHandler
 {
 	int i=0;
 	boolean isCompleted=false;
-	RandomAccessFile file;
-	FileChannel fc;
 	BufferedReader br;
 	ByteBuffer buffer=ByteBuffer.allocate(1024);
 	String fileName,line;

@@ -104,8 +104,8 @@ public class Server
 		@SuppressWarnings("unused")
 		//Server s=new Server("localhost",1234,MyFtpServer.SENDFILE,"D:\\SITO3\\Documents\\Xmas-20141224-310.jpg");
 		//Server s=new Server("localhost",1234,MyFtpServer.SENDFILE,"D:\\SITO3\\ntuser.ini");
-		//Server s=new Server("localhost",1234,MyFtpServer.SENDFILE,"C:\\Users\\cstsang\\AppData\\Local\\HouloVD\\Downloads\\PAL95.rar");
-		Server s=new Server("localhost",1234,MyFtpServer.SENDFILE,"C:\\Users\\cstsang\\AppData\\Local\\HouloVD\\Downloads\\test6.f");
+		Server s=new Server("localhost",1234,MyFtpServer.SENDFILE,"C:\\Users\\cstsang\\AppData\\Local\\HouloVD\\Downloads\\PAL95.rar");
+		//Server s=new Server("localhost",1234,MyFtpServer.SENDFILE,"C:\\Users\\cstsang\\AppData\\Local\\HouloVD\\Downloads\\test6.f");
 
 		//Server s=new Server("localhost",1234,MyFtpServer.RECEIVEFILE,"D:\\SITO3\\Desktop\\Xmas-20141224-310.jpg");
 	}	

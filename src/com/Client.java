@@ -58,8 +58,8 @@ public class Client
 		@SuppressWarnings("unused")
 		//Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"D:\\SITO3\\Desktop\\Xmas-20141224-310.jpg");
 		//Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"D:\\SITO3\\Desktop\\ntuser.ini");
-		//Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"C:\\Users\\cstsang\\Desktop\\PAL95.rar");
-		Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"C:\\Users\\cstsang\\Desktop\\test6.f");
+		Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"C:\\Users\\cstsang\\Desktop\\PAL95.rar");
+		//Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"C:\\Users\\cstsang\\Desktop\\test6.f");
 		//Client c=new Client("localhost",1234,MyFtpServer.SENDFILE,"D:\\SITO3\\Documents\\Xmas-20141224-310.jpg");
 	}
 }
