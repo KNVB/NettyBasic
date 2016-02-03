@@ -19,11 +19,12 @@ import io.netty.util.CharsetUtil;
 public class MyHandler implements ChannelInboundHandler
 {
 	int i=0;
+	boolean isCompleted=false;
 	RandomAccessFile file;
 	FileChannel fc;
 	BufferedReader br;
 	ByteBuffer buffer=ByteBuffer.allocate(1024);
-	String fileName;
+	String fileName,line;
 	Server server=null;
 	/**
 	 * Send file handler
@@ -41,16 +42,65 @@ public class MyHandler implements ChannelInboundHandler
 	{
 //		ctx.writeAndFlush(new ChunkedFile(new File(this.fileName))).addListener(new FileTransferCompleteListener(server));
 		br=new BufferedReader(new InputStreamReader(new FileInputStream(fileName),"ISO-8859-1"));
-		String line = br.readLine();
-		ctx.writeAndFlush(Unpooled.copiedBuffer(line+"\r\n",CharsetUtil.ISO_8859_1));
+		line = br.readLine();
+		ctx.writeAndFlush(Unpooled.copiedBuffer(line,CharsetUtil.ISO_8859_1));
 		
 	}
 	 public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception 
 	 {
-		 br.close();
-		 System.out.println((++i)+" I am here  "+ctx.channel().isWritable());
-		 fc.close();
-		 file.close();
+		 if (isCompleted)
+		 {
+			 br.close();
+			 System.out.println((++i)+" I am here  "+ctx.channel().isWritable());
+			 //fc.close();
+			 //file.close();
+			 server.stop();
+		 }
+		 else
+		 {
+			 if (br.ready())
+			 {
+				 if (ctx.channel().isWritable())
+				 {
+					 line = br.readLine();
+					 if (line==null)
+						 isCompleted=true;
+					 else	 
+						 ctx.writeAndFlush(Unpooled.copiedBuffer(line,CharsetUtil.ISO_8859_1));
+				 }
+			 }
+			 else
+				 isCompleted=true; 
+		 }
+		 
+		 
+		 /* if (ctx.channel().isWritable())
+		 {
+			 line = br.readLine();
+			 if (line==null)
+			 {
+				 br.close();
+				 System.out.println((++i)+" I am here  "+ctx.channel().isWritable());
+				 fc.close();
+				 file.close();
+				 server.stop();
+			 }
+			 else
+				 ctx.writeAndFlush(Unpooled.copiedBuffer(line+"\r\n",CharsetUtil.ISO_8859_1));
+		 }
+		 else
+		 {	
+			 if (!br.ready())
+			 {
+				 br.close();
+				 System.out.println(" you are here false");
+				 if (fc!=null)
+					 fc.close();
+				 if (file!=null)
+					 file.close();
+				 server.stop();
+			 }
+		 }*/
 	 }
 	@Override
 	public void handlerAdded(ChannelHandlerContext arg0) throws Exception {
@@ -91,15 +141,15 @@ public class MyHandler implements ChannelInboundHandler
 		
 	}
 	@Override
-	public void exceptionCaught(ChannelHandlerContext arg0, Throwable arg1)
+	public void exceptionCaught(ChannelHandlerContext arg0, Throwable t)
 			throws Exception {
-		// TODO Auto-generated method stub
+		t.printStackTrace();
 		
 	}
 	@Override
 	public void userEventTriggered(ChannelHandlerContext arg0, Object arg1)
 			throws Exception {
-		// TODO Auto-generated method stub
+		
 		
 	}
 }
