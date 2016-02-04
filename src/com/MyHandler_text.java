@@ -7,11 +7,11 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandler;
 import io.netty.util.CharsetUtil;
 
-public class MyHandler_text implements ChannelInboundHandler
+public class MyHandler_text extends SendFileHandler
 {
 	int i=0;
 	boolean isCompleted=false;
@@ -45,7 +45,10 @@ public class MyHandler_text implements ChannelInboundHandler
 		 {
 			 br.close();
 			 System.out.println((++i)+" I am here  "+ctx.channel().isWritable());
-			 server.stop();
+			 if (server==null)
+				ctx.close();	
+			 else	
+				server.stop();
 		 }
 		 else
 		 {
@@ -64,7 +67,11 @@ public class MyHandler_text implements ChannelInboundHandler
 				 isCompleted=true; 
 		 }
 	 } 
-		 
+	@Override
+	public void operationComplete(ChannelFuture future) throws Exception 
+	{
+		System.out.println("dino");		
+	}	 
 	@Override
 	public void handlerAdded(ChannelHandlerContext arg0) throws Exception {
 		// TODO Auto-generated method stub

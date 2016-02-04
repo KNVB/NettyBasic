@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.channel.ChannelFuture;
+import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.nio.NioEventLoopGroup;
@@ -32,6 +33,8 @@ public class Client
 			b.group(group);
 			b.channel(NioSocketChannel.class);
 			b.remoteAddress(new InetSocketAddress(host, port));
+			b.option(ChannelOption.WRITE_BUFFER_LOW_WATER_MARK,  1);
+	        b.option(ChannelOption.WRITE_BUFFER_HIGH_WATER_MARK, 1);
 			b.handler(new MyChannelInitializer(server, mode,fileName));
 			ChannelFuture f = b.connect().sync();
 			f.channel().closeFuture().sync();
@@ -56,10 +59,13 @@ public class Client
 	public static void main(String[] args) throws Exception 
 	{
 		@SuppressWarnings("unused")
+		//Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"D:\\SITO3\\Desktop\\chi.txt");
+		//Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"D:\\SITO3\\Desktop\\test6.f");
 		//Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"D:\\SITO3\\Desktop\\Xmas-20141224-310.jpg");
 		//Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"D:\\SITO3\\Desktop\\ntuser.ini");
-		Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"C:\\Users\\cstsang\\Desktop\\PAL95.rar");
+		//Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"C:\\Users\\cstsang\\Desktop\\PAL95.rar");
 		//Client c=new Client("localhost",1234,MyFtpServer.RECEIVEFILE,"C:\\Users\\cstsang\\Desktop\\test6.f");
 		//Client c=new Client("localhost",1234,MyFtpServer.SENDFILE,"D:\\SITO3\\Documents\\Xmas-20141224-310.jpg");
+		Client c=new Client("localhost",1234,MyFtpServer.SENDFILE,"D:\\chi.txt");
 	}
 }

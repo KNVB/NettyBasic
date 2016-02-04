@@ -6,10 +6,10 @@ import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
 
 import io.netty.buffer.Unpooled;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelHandlerContext;
-import io.netty.channel.ChannelInboundHandler;
 
-public class MyHandler implements ChannelInboundHandler
+public class MyHandler extends SendFileHandler
 {
 	int i=0,byteRead;
 	boolean isCompleted=false;
@@ -45,8 +45,11 @@ public class MyHandler implements ChannelInboundHandler
 		{
 			fc.close();
 			file.close();
-			System.out.println("Server:Transfer completed.");
-			server.stop();	
+			System.out.println("Transfer completed.");
+			if (server==null)
+				ctx.close();	
+			else	
+				server.stop();
 		}
 		else
 		{
@@ -72,6 +75,11 @@ public class MyHandler implements ChannelInboundHandler
 					 System.out.println("Is writable=false");
 			}
 		}
+	}
+	@Override
+	public void operationComplete(ChannelFuture future) throws Exception 
+	{
+		System.out.println("dino");		
 	}
 	@Override
 	public void handlerAdded(ChannelHandlerContext arg0) throws Exception {
@@ -122,5 +130,5 @@ public class MyHandler implements ChannelInboundHandler
 			throws Exception {
 		
 		
-	}
+	}	
 }

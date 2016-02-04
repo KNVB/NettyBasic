@@ -2,7 +2,6 @@ package com;
 
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelInitializer;
-import io.netty.handler.stream.ChunkedWriteHandler;
 
 public class MyChannelInitializer extends ChannelInitializer<Channel> 
 {
@@ -26,10 +25,12 @@ public class MyChannelInitializer extends ChannelInitializer<Channel>
         else
         {
             //ch.pipeline().addLast(new ChannelTrafficShapingHandler(10240L,0L));
-            ch.pipeline().addLast("streamer", new ChunkedWriteHandler()); 
+            //ch.pipeline().addLast("streamer", new ChunkedWriteHandler()); 
             //ch.pipeline().addLast("handler",new SendFileHandler(this.fileName,server));
-            ch.pipeline().addLast("handler",new MyHandler(this.fileName,server));
-            //ch.pipeline().addLast("handler",new MyHandler_text(this.fileName,server));
+            //SendFileHandler sendFileHandler=new MyHandler(this.fileName,server);
+            SendFileHandler sendFileHandler=new MyHandler_text(this.fileName,server);
+        	ch.pipeline().addLast("handler",sendFileHandler);
+        	ch.closeFuture().addListener(sendFileHandler);
         }
     }   
 }

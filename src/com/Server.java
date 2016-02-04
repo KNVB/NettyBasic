@@ -1,18 +1,14 @@
 package com;
 
 
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.util.Calendar;
 
-import io.netty.channel.Channel;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.EventLoopGroup;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
-import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.nio.NioEventLoopGroup;
-import io.netty.handler.stream.ChunkedWriteHandler;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
 
 /*
@@ -38,7 +34,6 @@ import io.netty.channel.socket.nio.NioServerSocketChannel;
  */
 public class Server 
 {
-	private Channel ch;
 	private EventLoopGroup bossGroup = new NioEventLoopGroup();
     private EventLoopGroup workerGroup = new NioEventLoopGroup();
 	/**
@@ -67,27 +62,7 @@ public class Server
 			eg.printStackTrace();
 			stop();
 		}
-	}
-	
-	/**
-	 * Send a file to client
-	 * @param serverPath A file to be sent to client 
-	 * @param responseCtx A ChannelHandlerContext for sending file transfer result to client
-	 */
-	public void sendFile(String serverPath) throws IOException 
-	{
-		ch.pipeline().addLast("streamer", new ChunkedWriteHandler());
-		ch.pipeline().addLast("handler",new SendFileHandler(serverPath, this));
-	}
-	/**
-	 * Receive a file from client
-	 * @param serverPath the location of the file to be resided.
-	 * @param responseCtx A ChannelHandlerContext for sending file receive result to client
-	 */
-	public void receiveFile(String serverPath, ChannelHandlerContext responseCtx) 
-	{
-		ch.pipeline().addLast(new ReceiveFileHandler(serverPath,this));
-	}
+	}	
 	/**
 	 * Stop the passive server and return passive port to passive port pool 
 	 */
@@ -102,11 +77,14 @@ public class Server
 	{
 		
 		@SuppressWarnings("unused")
+		//Server s=new Server("localhost",1234,MyFtpServer.SENDFILE,"D:\\chi.txt");
+		//Server s=new Server("localhost",1234,MyFtpServer.SENDFILE,"D:\\test6.f");
 		//Server s=new Server("localhost",1234,MyFtpServer.SENDFILE,"D:\\SITO3\\Documents\\Xmas-20141224-310.jpg");
 		//Server s=new Server("localhost",1234,MyFtpServer.SENDFILE,"D:\\SITO3\\ntuser.ini");
-		Server s=new Server("localhost",1234,MyFtpServer.SENDFILE,"C:\\Users\\cstsang\\AppData\\Local\\HouloVD\\Downloads\\PAL95.rar");
+		//Server s=new Server("localhost",1234,MyFtpServer.SENDFILE,"C:\\Users\\cstsang\\AppData\\Local\\HouloVD\\Downloads\\PAL95.rar");
 		//Server s=new Server("localhost",1234,MyFtpServer.SENDFILE,"C:\\Users\\cstsang\\AppData\\Local\\HouloVD\\Downloads\\test6.f");
 
 		//Server s=new Server("localhost",1234,MyFtpServer.RECEIVEFILE,"D:\\SITO3\\Desktop\\Xmas-20141224-310.jpg");
+		Server s=new Server("localhost",1234,MyFtpServer.RECEIVEFILE,"D:\\SITO3\\Desktop\\chi.txt");
 	}	
 }
